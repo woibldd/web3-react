@@ -2,7 +2,7 @@ import type { FallbackProvider, JsonRpcProvider } from '@ethersproject/providers
 import type { ConnectionInfo } from '@ethersproject/web'
 import type { Actions } from '@web3-react/types'
 import { Connector } from '@web3-react/types'
-
+ 
 type url = string | ConnectionInfo
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

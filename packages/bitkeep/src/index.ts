@@ -1,4 +1,4 @@
-import detectEthereumProvider from '@metamask/detect-provider'
+import type detectEthereumProvider from '@metamask/detect-provider'
 import type {
   Actions,
   AddEthereumChainParameter,
@@ -8,13 +8,14 @@ import type {
 } from '@web3-react/types'
 import { Connector } from '@web3-react/types'
 
-type MetaMaskProvider = Provider & { isMetaMask?: boolean; isConnected?: () => boolean; providers?: MetaMaskProvider[] }
+// type MetaMaskProvider = Provider & { isMetaMask?: boolean; isConnected?: () => boolean; providers?: MetaMaskProvider[] } 
+type BitKeepProvider = Provider & { isBitKeep?: boolean; isConnected?: () => boolean; providers?: BitKeepProvider[] }
 
-export class NoMetaMaskError extends Error {
+export class NoBitKeepError extends Error {
   public constructor() {
-    super('MetaMask not installed')
-    this.name = NoMetaMaskError.name
-    Object.setPrototypeOf(this, NoMetaMaskError.prototype)
+    super('BitKeep not installed')
+    this.name = NoBitKeepError.name
+    Object.setPrototypeOf(this, NoBitKeepError.prototype)
   }
 }
 
@@ -22,9 +23,9 @@ function parseChainId(chainId: string) {
   return Number.parseInt(chainId, 16)
 }
 
-export class MetaMask extends Connector {
+export class BitKeep extends Connector {
   /** {@inheritdoc Connector.provider} */
-  public provider: MetaMaskProvider | undefined
+  public provider: BitKeepProvider | undefined
 
   private readonly options?: Parameters<typeof detectEthereumProvider>[0]
   private eagerConnection?: Promise<void>
@@ -47,16 +48,16 @@ export class MetaMask extends Connector {
 
   private async isomorphicInitialize(): Promise<void> {
     if (this.eagerConnection) return this.eagerConnection
- 
+
     await (this.eagerConnection = import('@metamask/detect-provider')
       .then((m) => m.default(this.options))
       .then((provider) => {
         if (provider) {
-          this.provider = provider as MetaMaskProvider
+          this.provider = provider as BitKeepProvider
 
           // edge case if e.g. metamask and coinbase wallet are both installed
           if (this.provider.providers?.length) {
-            this.provider = this.provider.providers.find((p) => p.isMetaMask) ?? this.provider.providers[0]
+            this.provider = this.provider.providers.find((p) => p.isBitKeep) ?? this.provider.providers[0]
           }
 
           this.provider.on('connect', ({ chainId }: ProviderConnectInfo): void => {
@@ -119,8 +120,10 @@ export class MetaMask extends Connector {
   public async activate(desiredChainIdOrChainParameters?: number | AddEthereumChainParameter): Promise<void> {
     if (!this.provider?.isConnected?.()) this.actions.startActivation()
 
+    console.log('bitkeep.activate')
+
     await this.isomorphicInitialize()
-    if (!this.provider) return this.actions.reportError(new NoMetaMaskError())
+    if (!this.provider) return this.actions.reportError(new NoBitKeepError())
 
     return Promise.all([
       this.provider.request({ method: 'eth_chainId' }) as Promise<string>,

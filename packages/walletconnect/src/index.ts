@@ -6,6 +6,7 @@ import EventEmitter3 from 'eventemitter3'
 import type { EventEmitter } from 'node:events'
 import { getBestUrl } from './utils'
 
+console.log('test')
 export const URI_AVAILABLE = 'URI_AVAILABLE'
 
 type MockWalletConnectProvider = WalletConnectProvider & EventEmitter

@@ -18,13 +18,14 @@
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
   "scripts": {
-    "prebuild": "rm -rf dist",
+    "prebuild": "rimraf dist",
     "build": "tsc",
     "start": "tsc --watch"
   },
   "dependencies": {
     "@ethersproject/providers": "^5",
-    "@web3-react/types": "^8.0.12-beta.0"
+    "@web3-react/types": "^8.0.12-beta.0",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "@web3-react/store": "^8.0.17-beta.0"
