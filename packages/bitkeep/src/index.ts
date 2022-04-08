@@ -118,9 +118,7 @@ export class BitKeep extends Connector {
    * specified parameters first, before being prompted to switch.
    */
   public async activate(desiredChainIdOrChainParameters?: number | AddEthereumChainParameter): Promise<void> {
-    if (!this.provider?.isConnected?.()) this.actions.startActivation()
-
-    console.log('bitkeep.activate')
+    if (!this.provider?.isConnected?.()) this.actions.startActivation() 
 
     await this.isomorphicInitialize()
     if (!this.provider) return this.actions.reportError(new NoBitKeepError())

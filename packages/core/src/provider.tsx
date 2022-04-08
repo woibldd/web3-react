@@ -44,8 +44,7 @@ export function Web3ReactProvider<T extends BaseProvider = Web3Provider>({
     usePriorityENSNames,
     usePriorityENSName,
   } = getPriorityConnector(...connectors)
-
-  console.log(connectors)
+ 
   const connector = usePriorityConnector()
   const chainId = usePriorityChainId()
   const accounts = usePriorityAccounts()
@@ -78,8 +77,7 @@ export function Web3ReactProvider<T extends BaseProvider = Web3Provider>({
 }
 
 export function useWeb3React() {
-  const web3 = useContext(Web3Context)
-  console.log({web3})
+  const web3 = useContext(Web3Context) 
   if (!web3) throw Error('useWeb3React can only be used within the Web3ReactProvider component')
   return web3
 }
